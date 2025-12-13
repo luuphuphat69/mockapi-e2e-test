@@ -2,17 +2,18 @@ name: Listener for E2E Tests
 
 on:
   repository_dispatch:
-    types: [trigger-e2e-run]
+    types: [trigger-e2e-run] # Must match the event_type exactly
 
 jobs:
   e2e-test-job:
     runs-on: ubuntu-latest
 
     steps:
-      - name: ⬇️ Checkout code
+      - name: ⬇️ Checkout Test Code (using SHA)
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.client_payload.ref }}
+          # Use the SHA sent in the payload for a guaranteed, reliable checkout
+          ref: ${{ github.event.client_payload.sha }} 
 
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
