@@ -2,18 +2,15 @@ name: Listener for E2E Tests
 
 on:
   repository_dispatch:
-    types: [trigger-e2e-run] # Must match the event_type exactly
+    types: [trigger-e2e-run]
 
 jobs:
   e2e-test-job:
     runs-on: ubuntu-latest
 
     steps:
-      - name: ⬇️ Checkout Test Code (using SHA)
+      - name: ⬇️ Checkout E2E Test Repo
         uses: actions/checkout@v4
-        with:
-          # Use the SHA sent in the payload for a guaranteed, reliable checkout
-          ref: ${{ github.event.client_payload.sha }} 
 
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
@@ -24,4 +21,6 @@ jobs:
         run: npm install
 
       - name: 🧪 Run E2E Tests
+        env:
+          BASE_URL: ${{ github.event.client_payload.baseUrl }}
         run: npm run e2e:ci
