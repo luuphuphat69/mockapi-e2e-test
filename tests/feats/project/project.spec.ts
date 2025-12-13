@@ -3,7 +3,7 @@ import LoginPage from "../../../page-model/auth/Login";
 import {APIBASEURL, testAccounts } from "../../../utilities/common";
 import ProjectPage from "../../../page-model/projects/Project";
 import ProjectPopup from "../../../page-model/projects/components-model/ProjectPopup";
-import ProjectCard from "../../../page-model/projects/components-model/projectCard";
+import ProjectCard from "../../../page-model/projects/components-model/ProjectCard";
 import ConfirmDelete from "../../../page-model/projects/components-model/ConfirmDelete";
 
 
