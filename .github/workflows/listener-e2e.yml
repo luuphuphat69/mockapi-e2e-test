@@ -1,0 +1,23 @@
+name: Listener for E2E Tests
+on:
+  repository_dispatch:
+    types: [trigger-e2e-run] 
+
+jobs:
+  e2e-test-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout Test Code
+        uses: actions/checkout@v4
+      
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 📦 Install Dependencies
+        run: npm install
+
+      - name: ✅ Run E2E Tests
+        run: npm run e2e:ci 
