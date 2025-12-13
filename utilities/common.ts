@@ -1,4 +1,3 @@
-export const BASEURL = 'https://previewenv.mockapi.io.vn';
 export const APIBASEURL = 'https://api.mockapi.io.vn/api'
 export const testAccounts = [
     {
