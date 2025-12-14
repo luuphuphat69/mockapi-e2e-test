@@ -25,4 +25,6 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: 🧪 Run E2E Tests
+        env:
+          VERCEL_BYPASS_TOKEN: ${{ secrets.VERCEL_BYPASS_TOKEN }}
         run: npm run e2e:ci
