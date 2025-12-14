@@ -1,5 +1,4 @@
 import { Page } from "@playwright/test";
-import { BASEURL } from "../../utilities/common";
 
 export default class ResourcePage {
     page: Page
@@ -16,6 +15,6 @@ export default class ResourcePage {
     }
 
     async goTo(projectId: string){
-        await this.page.goto(`${BASEURL}/projects/${projectId}/resources`)
+        await this.page.goto(`/projects/${projectId}/resources`)
     }
 }

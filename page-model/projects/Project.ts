@@ -1,5 +1,4 @@
 import { Locator, Page } from "@playwright/test";
-import { BASEURL } from "../../utilities/common";
 
 export default class ProjectPage{
     page: Page;
@@ -11,7 +10,7 @@ export default class ProjectPage{
     }
 
     async goTo(){
-        await this.page.goto(BASEURL + '/projects')
+        await this.page.goto('/projects')
     }
 
     async clickAddNewProjectBtn(){
