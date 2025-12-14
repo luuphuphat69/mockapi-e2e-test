@@ -26,7 +26,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: process.env.BASE_URL || 'https://previewenv.mockapi.io.vn',
+    baseURL: 'https://previewenv.mockapi.io.vn',
     extraHTTPHeaders: {
       'x-vercel-protection-bypass': process.env.VERCEL_BYPASS_TOKEN || '',
     },
