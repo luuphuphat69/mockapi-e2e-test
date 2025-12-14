@@ -20,7 +20,7 @@ test.beforeEach(async ({page}) => {
     expect(promise.status()).toBe(200);
 });
 
-test.describe('Projects CRUD', () => {
+test.describe.serial('Projects CRUD', () => {
     test('Create project', async ({page}) => {
         const insertedData = {name: 'test', version: '/v0'}
 

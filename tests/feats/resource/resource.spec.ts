@@ -17,7 +17,7 @@ test.beforeEach(async ({ page }) => {
     expect(promise.status()).toBe(200);
 })
 
-test.describe('Resource CRUD', () => {
+test.describe.serial('Resource CRUD', () => {
     test('Add new resource', async ({ page }) => {
 
         let testData = {

@@ -10,7 +10,8 @@ export default class ProjectPage{
     }
 
     async goTo(){
-        await this.page.goto('/projects')
+        await this.page.goto('/projects', {waitUntil: "domcontentloaded"})
+        await this.page.waitForURL('**/projects');
     }
 
     async clickAddNewProjectBtn(){
