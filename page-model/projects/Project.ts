@@ -9,9 +9,11 @@ export default class ProjectPage{
         this.addProjectBtn = page.getByRole('button', {name: 'Add New Project'});
     }
 
-    async goTo(){
-        await this.page.goto('/projects', {waitUntil: "domcontentloaded"})
-        await this.page.waitForURL('**/projects');
+    async goTo() {
+        if (!this.page.url().includes('/projects')) {
+            await this.page.goto('/projects', { waitUntil: 'domcontentloaded' });
+        }
+        await this.page.waitForURL(/\/projects$/, { timeout: 10_000 });
     }
 
     async clickAddNewProjectBtn(){

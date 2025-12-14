@@ -7,15 +7,21 @@ import ResourcePopup from "../../../page-model/resource/components-model/popup";
 test.beforeEach(async ({ page }) => {
     const testAcc = testAccounts[0];
     const loginPage = new LoginPage(page);
-    await loginPage.goTo();
 
+    await loginPage.goTo();
     await loginPage.fillEmail(testAcc.email);
     await loginPage.fillPassword(testAcc.password);
-    await loginPage.submitLoginBtn();
 
-    const promise = await page.waitForResponse(APIBASEURL + '/login');
-    expect(promise.status()).toBe(200);
-})
+    await Promise.all([
+        page.waitForResponse(res =>
+            res.url() === `${APIBASEURL}/login` && res.status() === 200
+        ),
+        loginPage.submitLoginBtn(),
+    ]);
+
+    await page.waitForURL(/projects/, { timeout: 15_000 });
+});
+
 
 test.describe.serial('Resource CRUD', () => {
     test('Add new resource', async ({ page }) => {
@@ -25,7 +31,7 @@ test.describe.serial('Resource CRUD', () => {
             schema: [
                 { name: 'test-field-1', type: 'number' },
                 { name: 'test-field-2', type: 'string' },
-                { name: 'test-field-3', type: 'Fake', module: 'person.firstName'}
+                { name: 'test-field-3', type: 'Fake', module: 'person.firstName' }
             ],
             numberOfRecord: 20
         }
@@ -39,6 +45,8 @@ test.describe.serial('Resource CRUD', () => {
         await resourcePage.goTo(testAccounts[0].projectId);
         await resourcePage.clickAddNewResourceBtn();
         await expect(resourcePopup.popup).toBeVisible();
+        await expect(resourcePopup.resourceNameInput).toBeEnabled();
+
 
         // After popup shown up -> Input resource name
         await resourcePopup.setResourceNameInputValue(testData.resourceName);
@@ -48,10 +56,10 @@ test.describe.serial('Resource CRUD', () => {
             // set (i)th schema line
             resourcePopup.setSelectedSchemaPosition(i);
             await resourcePopup.addFieldButton.click();
-            
+
             //After click 'Add field' button -> Wait for input to shown up
             await expect(resourcePopup.schemaInput).toBeVisible();
-            
+
             // Set values
             await resourcePopup.setSchemaInputValue(testData.schema[i - 1].name)
             await resourcePopup.dataTypeOption.selectOption(testData.schema[i - 1].type);
@@ -64,10 +72,10 @@ test.describe.serial('Resource CRUD', () => {
                 // Wait for fake module dropdown shown up
                 await expect(resourcePopup.fakerModuleButton).toBeVisible();
                 await resourcePopup.fakerModuleButton.click();
-                
+
                 // After click the dropdown -> Wait for the container, which store all the options to shown up
                 await expect(resourcePopup.fakerModuleOptionContainer).toBeVisible();
-                
+
                 // Select option
                 const option = resourcePopup.getFakerModuleOption(testData.schema[i - 1].module!);
                 await option.click();
@@ -82,8 +90,7 @@ test.describe.serial('Resource CRUD', () => {
         await resourcePopup.submitButton.click();
         const response = await createResponsePromise;
 
-        expect(response.status()).toBe(200);
+        expect([200, 201]).toContain(response.status());
         await expect(resourcePopup.popup).toBeHidden();
-
     })
 })

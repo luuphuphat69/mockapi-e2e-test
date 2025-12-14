@@ -14,7 +14,16 @@ export default class ResourcePage {
         await this.addNewResourceButton.click();
     }
 
-    async goTo(projectId: string){
-        await this.page.goto(`/projects/${projectId}/resources`)
+    async goTo(projectId: string) {
+        const target = `/projects/${projectId}/resources`;
+
+        if (!this.page.url().includes(target)) {
+            await this.page.goto(target, { waitUntil: 'domcontentloaded' });
+        }
+
+        await this.page.waitForURL(new RegExp(`${projectId}/resources`), {
+            timeout: 10_000,
+        });
     }
+
 }
