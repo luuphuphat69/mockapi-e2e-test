@@ -92,7 +92,7 @@ test.describe.serial('Resource CRUD', () => {
         if (response.status() === 400) {
             console.error(await response.json());
         }
-        expect(response.status).toBe(200)
+        expect(response.status()).toBe(200)
         await expect(resourcePopup.popup).toBeHidden();
     })
 })
