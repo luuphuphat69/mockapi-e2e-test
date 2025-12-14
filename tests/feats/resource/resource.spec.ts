@@ -89,7 +89,9 @@ test.describe.serial('Resource CRUD', () => {
 
         await resourcePopup.submitButton.click();
         const response = await createResponsePromise;
-
+        if (response.status() === 400) {
+            console.error(await response.json());
+        }
         expect([200, 201]).toContain(response.status());
         await expect(resourcePopup.popup).toBeHidden();
     })
