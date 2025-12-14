@@ -25,9 +25,9 @@ test.beforeEach(async ({ page }) => {
 
 test.describe.serial('Resource CRUD', () => {
     test('Add new resource', async ({ page }) => {
-
+        const date = new Date();
         let testData = {
-            resourceName: 'test-resource',
+            resourceName: `test-resource ${date.toString()}`,
             schema: [
                 { name: 'test-field-1', type: 'number' },
                 { name: 'test-field-2', type: 'string' },
@@ -92,7 +92,7 @@ test.describe.serial('Resource CRUD', () => {
         if (response.status() === 400) {
             console.error(await response.json());
         }
-        expect([200, 201]).toContain(response.status());
+        expect(response.status).toBe(200)
         await expect(resourcePopup.popup).toBeHidden();
     })
 })
