@@ -1,29 +1,9 @@
 import { expect, test } from "@playwright/test";
-import LoginPage from "../../../page-model/auth/Login";
 import {APIBASEURL, testAccounts } from "../../../utilities/common";
 import ProjectPage from "../../../page-model/projects/Project";
 import ProjectPopup from "../../../page-model/projects/components-model/ProjectPopup";
 import ProjectCard from "../../../page-model/projects/components-model/ProjectCard";
 import ConfirmDelete from "../../../page-model/projects/components-model/ConfirmDelete";
-
-
-test.beforeEach(async ({ page }) => {
-  const testAcc = testAccounts[0];
-  const loginPage = new LoginPage(page);
-
-  await loginPage.goTo();
-  await loginPage.fillEmail(testAcc.email);
-  await loginPage.fillPassword(testAcc.password);
-
-  await Promise.all([
-    page.waitForResponse(res =>
-      res.url() === `${APIBASEURL}/login` && res.status() === 200
-    ),
-    loginPage.submitLoginBtn(),
-  ]);
-  await page.waitForURL(/projects/, { timeout: 15_000 });
-});
-
 
 test.describe.serial('Projects CRUD', () => {
     test('Create project', async ({page}) => {

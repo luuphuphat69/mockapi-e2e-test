@@ -1,4 +1,5 @@
 import { Locator, Page } from "@playwright/test";
+import {vercelAuthQueryParams} from '../../utilities/common'
 
 export default class LoginPage{
     page: Page;
@@ -13,7 +14,7 @@ export default class LoginPage{
         this.loginBtn = page.getByRole('button', {name: 'Sign in'});
     }
     async goTo(){
-        await this.page.goto('/login')
+        await this.page.goto('/login?' + vercelAuthQueryParams);
     }
 
     async fillEmail(email: string){
