@@ -1,27 +1,7 @@
 import { test, expect } from "@playwright/test";
-import { APIBASEURL, testAccounts } from "../../../utilities/common";
-import LoginPage from "../../../page-model/auth/Login";
+import { APIBASEURL } from "../../../utilities/common";
 import ResourcePage from "../../../page-model/resource/resource";
 import ResourcePopup from "../../../page-model/resource/components-model/popup";
-
-test.beforeEach(async ({ page }) => {
-    const testAcc = testAccounts[0];
-    const loginPage = new LoginPage(page);
-
-    await loginPage.goTo();
-    await loginPage.fillEmail(testAcc.email);
-    await loginPage.fillPassword(testAcc.password);
-
-    await Promise.all([
-        page.waitForResponse(res =>
-            res.url() === `${APIBASEURL}/login` && res.status() === 200
-        ),
-        loginPage.submitLoginBtn(),
-    ]);
-
-    await page.waitForURL(/projects/, { timeout: 15_000 });
-});
-
 
 test.describe.serial('Resource CRUD', () => {
     test('Add new resource', async ({ page }) => {
@@ -35,6 +15,9 @@ test.describe.serial('Resource CRUD', () => {
             ],
             numberOfRecord: 20
         }
+        if(!process.env.TEST_PROJECT_ID || !process.env.TEST_USER_ID){
+            throw new Error('Missing TEST_PROJECT_ID or TEST_USER_ID');
+        }
 
         const resourcePage = new ResourcePage(page);
         const resourcePopup = new ResourcePopup(page);
@@ -42,7 +25,7 @@ test.describe.serial('Resource CRUD', () => {
         resourcePopup.setIsEdit(false)
 
         // Go to resource page -> click 'Add New Resource' button -> Wait for pop up shown up
-        await resourcePage.goTo(testAccounts[0].projectId);
+        await resourcePage.goTo(process.env.TEST_PROJECT_ID);
         await resourcePage.clickAddNewResourceBtn();
         await expect(resourcePopup.popup).toBeVisible();
         await expect(resourcePopup.resourceNameInput).toBeEnabled();
@@ -83,7 +66,7 @@ test.describe.serial('Resource CRUD', () => {
         }
         await resourcePopup.numberOfRecorsInput.fill(testData.numberOfRecord.toString());
         const createResponsePromise = page.waitForResponse(res =>
-            res.url() === `${APIBASEURL}/resources/${testAccounts[0].id}/${testAccounts[0].projectId}` &&
+            res.url() === `${APIBASEURL}/resources/${process.env.TEST_USER_ID}/${process.env.TEST_PROJECT_ID}` &&
             res.request().method() === 'POST',
         );
 
