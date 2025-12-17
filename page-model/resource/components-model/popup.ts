@@ -10,7 +10,7 @@ export default class ResourcePopup{
     }
 
     get popup() {
-        return this.page.locator('.bg-card.border.border-border.rounded-lg.p-8.w-full.max-w-2xl.shadow-xl');
+        return this.page.getByTestId('resource-form-modal');
     }
 
     get resourceNameInput(){
@@ -34,7 +34,7 @@ export default class ResourcePopup{
     }
 
     get dataTypeOption(){
-        return this.page.locator('.bg-background.border.border-border.text-foreground.rounded.px-3.py-2.flex-1').nth(2 * this.selectedSchemaPosition + 1);
+        return this.page.getByTestId('select-data-type').nth(2 * this.selectedSchemaPosition + 1);
     }
 
     get fakerModuleButton(){
@@ -42,7 +42,7 @@ export default class ResourcePopup{
     }
 
     get fakerModuleOptionContainer(){
-        return this.page.locator('.absolute.top-full.left-0.right-0.mt-1.bg-background.border.border-border.rounded.shadow-lg.z-50')
+        return this.page.getByTestId('faker-modules-container')
     }
 
     getFakerModuleOption(nameModule: string){

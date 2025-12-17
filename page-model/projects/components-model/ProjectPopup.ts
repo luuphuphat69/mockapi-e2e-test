@@ -3,7 +3,6 @@ import { Locator, Page } from "@playwright/test";
 export default class ProjectPopup{
     page: Page
     popup: Locator
-    title: Locator
     projectNameInput: Locator
     apiVersionInput: Locator
     submitBtn: Locator
@@ -11,8 +10,7 @@ export default class ProjectPopup{
 
     constructor(page: Page, isEdit: boolean) {       
         this.page = page;
-        this.popup = page.locator('.bg-card.border.border-border.rounded-lg.p-8.w-full.max-w-md.shadow-xl');
-        this.title = page.locator('.text-2xl.font-bold.text-foreground.mb-6')
+        this.popup = page.getByTestId('project-popup');
         this.projectNameInput = page.locator('#project-name');
         this.apiVersionInput = page.locator('#api-prefix')
         this.isEdit = isEdit

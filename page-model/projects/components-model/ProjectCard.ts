@@ -8,11 +8,11 @@ export default class ProjectCard {
         this.page = page
     }
     get projectName() {
-        return this.page.locator('.text-xl.font-semibold').nth(this.selectedProjectPosition);
+        return this.page.getByTestId('project-name').nth(this.selectedProjectPosition);
     }
 
     get projectVersion() {
-        return this.page.locator('.text-sm.text-muted-foreground.font-mono.bg-background.px-3.py-2.rounded.border.border-border').nth(this.selectedProjectPosition);
+        return this.page.getByTestId('project-version').nth(this.selectedProjectPosition);
     }
 
     get editProjectBtn() {

@@ -5,7 +5,7 @@ export default class ConfirmDelete{
     popup: Locator
     constructor(page: Page) {
         this.page = page
-        this.popup = page.locator('.bg-card.border.border-border.rounded-lg.p-8.w-full.max-w-md.shadow-xl');
+        this.popup = page.getByTestId('confirm-delete-project')
     }
     
     get deleteButton(){
