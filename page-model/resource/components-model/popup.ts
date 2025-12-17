@@ -34,7 +34,7 @@ export default class ResourcePopup{
     }
 
     get dataTypeOption(){
-        return this.page.getByTestId('select-data-type').nth(2 * this.selectedSchemaPosition + 1);
+        return this.page.getByTestId('select-data-type').nth(this.selectedSchemaPosition);
     }
 
     get fakerModuleButton(){
