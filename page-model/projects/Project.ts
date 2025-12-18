@@ -9,6 +9,10 @@ export default class ProjectPage{
         this.addProjectBtn = page.getByRole('button', {name: 'Add New Project'});
     }
 
+    get projectGridContainer(){
+        return this.page.getByTestId('project-grid-container');
+    }
+    
     async goTo() {
         if (!this.page.url().includes('/projects')) {
             await this.page.goto('/projects', { waitUntil: 'domcontentloaded' });
@@ -19,5 +23,4 @@ export default class ProjectPage{
     async clickAddNewProjectBtn(){
         await this.addProjectBtn.click();
     }
-
 }

@@ -9,9 +9,9 @@ const testData = (isEdit: boolean) => {
         resourceName: !isEdit ? `test-resource ${date.toString()}` : `updated-test-resource ${date.toString()}`,
         schema: [
             !isEdit ? { name: 'test-field-1', type: 'number' } : {name: 'updated-test-field-1', type: 'boolean'},
-            !isEdit ? { name: 'test-field-2', type: 'string' } : {name: 'updated-test-field-2', type: 'number'},
+            !isEdit ? { name: 'test-field-2', type: 'string' } : {name: 'updated-test-field-2', type: 'Fake',  module: 'person.fullName'},
             !isEdit ? { name: 'test-field-3', type: 'Fake', module: 'person.firstName' }:
-            { name: 'updated-test-field-3', type: 'Fake', module: 'person.fullName' }
+            { name: 'updated-test-field-3', type: 'string'}
         ],
         numberOfRecord: !isEdit ? 20 : 10
     }
@@ -93,8 +93,10 @@ test.describe.serial('Resource CRUD', () => {
         await resourcePage.goTo(process.env.TEST_PROJECT_ID);
         await resourceCard.editButton.click();
         await expect(resourcePopup.popup).toBeVisible();
-
+        await resourcePopup.setResourceNameInputValue(data.resourceName);
+        
         for(let i = 1; i <= data.schema.length; i++){
+            resourcePopup.setSelectedSchemaPosition(i);
             await resourcePopup.setSchemaInputValue(data.schema[i - 1].name)
             await resourcePopup.dataTypeOption.selectOption(data.schema[i - 1].type);
 
