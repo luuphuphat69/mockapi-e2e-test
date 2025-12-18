@@ -14,6 +14,10 @@ export default class ResourcePage {
         await this.addNewResourceButton.click();
     }
 
+    get resourceContainer(){
+        return this.page.getByTestId('resource-grid-container');
+    }
+
     async goTo(projectId: string) {
         const target = `/projects/${projectId}/resources`;
 
