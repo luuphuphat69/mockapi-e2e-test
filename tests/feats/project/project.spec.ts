@@ -16,39 +16,43 @@ test.describe.serial('Projects CRUD', () => {
         const projectPopup = new ProjectPopup(page, false);
 
         await projectPage.goTo()
+        const projects = projectPage.projectGridContainer.getByTestId('project-name');
+
+        // wait for data render
+        await expect(projects.first()).toBeVisible();
+        const totalBefore = await projects.count();
+
         await projectPage.clickAddNewProjectBtn();
         await expect(projectPopup.popup).toBeVisible();
         await projectPopup.fillProjectName(insertedData.name);
         await projectPopup.fillApiVersion(insertedData.version);
         await projectPopup.submit();
-
-        await projectPage.goTo();
-        const newlyAddedProject = projectPage.projectGridContainer.getByText(insertedData.name);
-        await expect(newlyAddedProject).toBeVisible();
+        await expect(projectPopup.popup).not.toBeVisible();
+        await expect(projects).toHaveCount(totalBefore + 1);
     }),
 
-        test('Update (n)th project', async ({ page }) => {
+    test('Update (n)th project', async ({ page }) => {
 
-            const projectPage = new ProjectPage(page);
-            const projectCard = new ProjectCard(page)
-            const projectPopup = new ProjectPopup(page, true);
+        const projectPage = new ProjectPage(page);
+        const projectCard = new ProjectCard(page)
+        const projectPopup = new ProjectPopup(page, true);
 
-            // Go to Project page
-            await projectPage.goTo()
+        // Go to Project page
+        await projectPage.goTo()
 
-            // Choose selected project and click edit button on project card
-            projectCard.setSelectedProjectPosition(selectedProjectPosition);
-            await projectCard.clickEditProject();
-            await expect(projectPopup.popup).toBeVisible();
+        // Choose selected project and click edit button on project card
+        projectCard.setSelectedProjectPosition(selectedProjectPosition);
+        await projectCard.clickEditProject();
+        await expect(projectPopup.popup).toBeVisible();
 
-            // After popup shown up, then fill out infos
-            await projectPopup.fillProjectName(updateData.name);
-            await projectPopup.fillApiVersion(updateData.version);
-            await projectPopup.submit();
+        // After popup shown up, then fill out infos
+        await projectPopup.fillProjectName(updateData.name);
+        await projectPopup.fillApiVersion(updateData.version);
+        await projectPopup.submit();
 
-            await expect(projectCard.projectName).toHaveText(updateData.name, { useInnerText: true })
-            await expect(projectCard.projectVersion).toHaveText(updateData.version, { useInnerText: true })
-        })
+        await expect(projectCard.projectName).toHaveText(updateData.name, { useInnerText: true })
+        await expect(projectCard.projectVersion).toHaveText(updateData.version, { useInnerText: true })
+    })
 
     test('Delete nth project', async ({ page }) => {
         const projectPage = new ProjectPage(page);
