@@ -17,7 +17,7 @@ const testData = (isEdit: boolean) => {
     }
 }
 
-test.describe.serial('Resource CRUD', () => {
+test.describe('Resource CRUD', () => {
     test('Add new resource', async ({ page }) => {
         if(!process.env.TEST_PROJECT_ID || !process.env.TEST_USER_ID){
             throw new Error('Missing TEST_PROJECT_ID or TEST_USER_ID');
@@ -75,7 +75,7 @@ test.describe.serial('Resource CRUD', () => {
 
         await resourcePage.goTo(process.env.TEST_PROJECT_ID);
         const addedResource = resourcePage.resourceContainer.getByText(data.resourceName);
-        expect(addedResource).toBeVisible();
+        await expect(addedResource).toBeVisible();
     }),
 
     test('Update resource', async ({page}) => {
@@ -91,6 +91,7 @@ test.describe.serial('Resource CRUD', () => {
         const data = testData(true)
         
         await resourcePage.goTo(process.env.TEST_PROJECT_ID);
+        await expect(resourceCard.card).toBeVisible();
         await resourceCard.editButton.click();
         await expect(resourcePopup.popup).toBeVisible();
         await resourcePopup.setResourceNameInputValue(data.resourceName);
@@ -122,6 +123,25 @@ test.describe.serial('Resource CRUD', () => {
         await expect(resourcePopup.popup).toBeHidden();
 
         const updatedResource = resourcePage.resourceContainer.getByText(data.resourceName);
-        expect(updatedResource).toBeVisible();
+        await expect(updatedResource).toBeVisible();
+    })
+
+    test('Delete resource', async ({ page }) => {
+        if (!process.env.TEST_PROJECT_ID || !process.env.TEST_USER_ID) {
+            throw new Error('Missing TEST_PROJECT_ID or TEST_USER_ID');
+        }
+
+        const resourcePage = new ResourcePage(page);
+        const resourceCard = new ResourceCard(page);
+
+        await resourcePage.goTo(process.env.TEST_PROJECT_ID);
+        const resources =  resourcePage.resourceContainer.getByTestId('resource-card')
+        let total = await resources.count();
+        console.log(total)
+
+        resourceCard.setSelectedCardPosition(0);
+        await resourceCard.deleteButton.click();
+
+        await expect(resources).toHaveCount(total - 1)
     })
 })

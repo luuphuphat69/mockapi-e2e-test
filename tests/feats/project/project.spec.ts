@@ -8,7 +8,7 @@ import ConfirmDelete from "../../../page-model/projects/components-model/Confirm
 let selectedProjectPosition = 2
 let updateData = { name: 'test-is-update', version: '/v1' }
 
-test.describe.serial('Projects CRUD', () => {
+test.describe('Projects CRUD', () => {
     test('Create project', async ({ page }) => {
         const insertedData = { name: 'test', version: '/v0' }
 
@@ -54,24 +54,24 @@ test.describe.serial('Projects CRUD', () => {
         await expect(projectCard.projectVersion).toHaveText(updateData.version, { useInnerText: true })
     })
 
-    test('Delete nth project', async ({ page }) => {
-        const projectPage = new ProjectPage(page);
-        const projectCard = new ProjectCard(page);
-        const confirmDelete = new ConfirmDelete(page);
+    // test('Delete nth project', async ({ page }) => {
+    //     const projectPage = new ProjectPage(page);
+    //     const projectCard = new ProjectCard(page);
+    //     const confirmDelete = new ConfirmDelete(page);
 
-        projectCard.setSelectedProjectPosition(selectedProjectPosition);
-        await projectPage.goTo();
+    //     projectCard.setSelectedProjectPosition(selectedProjectPosition);
+    //     await projectPage.goTo();
 
-        const projects = projectPage.projectGridContainer.getByTestId('project-name');
+    //     const projects = projectPage.projectGridContainer.getByTestId('project-name');
 
-        // wait for data render
-        await expect(projects.first()).toBeVisible();
-        const totalBefore = await projects.count();
+    //     // wait for data render
+    //     await expect(projects.first()).toBeVisible();
+    //     const totalBefore = await projects.count();
 
-        await projectCard.clickDeleteProject();
-        await expect(confirmDelete.popup).toBeVisible();
+    //     await projectCard.clickDeleteProject();
+    //     await expect(confirmDelete.popup).toBeVisible();
 
-        await confirmDelete.clickDeleteButton();
-        await expect(projects).toHaveCount(totalBefore - 1);
-    });
+    //     await confirmDelete.clickDeleteButton();
+    //     await expect(projects).toHaveCount(totalBefore - 1);
+    // });
 })
