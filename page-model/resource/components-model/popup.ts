@@ -38,7 +38,7 @@ export default class ResourcePopup{
     }
 
     get fakerModuleButton(){
-        return this.page.getByTestId('select-module-button')
+        return this.page.getByRole('button', { name: 'Select module' })
     }
 
     get fakerModuleOptionContainer(){
