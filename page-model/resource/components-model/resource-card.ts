@@ -13,11 +13,11 @@ export default class ResourceCard{
     }
 
     get editButton(){
-        return this.card.getByRole('button', {name: 'Edit'}).nth(this.selectedCardPosition)
+        return this.card.getByTestId('edit-resource-button').nth(this.selectedCardPosition)
     }
 
     get deleteButton(){
-        return this.card.getByRole('button', {name: 'Delete'}).nth(this.selectedCardPosition);
+        return this.card.getByTestId('delete-resource-button').nth(this.selectedCardPosition);
     }
 
     setSelectedCardPosition(pos: number){

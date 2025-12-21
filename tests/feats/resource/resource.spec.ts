@@ -136,8 +136,9 @@ test.describe('Resource CRUD', () => {
 
         await resourcePage.goTo(process.env.TEST_PROJECT_ID);
         const resources =  resourcePage.resourceContainer.getByTestId('resource-card')
+        // wait until resources are rendered
+        await expect(resources.first()).toBeVisible({ timeout: 10_000 });
         let total = await resources.count();
-        console.log(total)
 
         resourceCard.setSelectedCardPosition(0);
         await resourceCard.deleteButton.click();
