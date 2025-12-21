@@ -1,5 +1,4 @@
 import { expect, test } from "@playwright/test";
-import { APIBASEURL, testAccounts } from "../../../utilities/common";
 import ProjectPage from "../../../page-model/projects/Project";
 import ProjectPopup from "../../../page-model/projects/components-model/ProjectPopup";
 import ProjectCard from "../../../page-model/projects/components-model/ProjectCard";
