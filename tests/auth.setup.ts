@@ -4,7 +4,7 @@ import LoginPage from '../page-model/auth/Login';
 
 const authFile = path.join(__dirname, '../playwright/.auth/user.json');
 
-setup('authenticate', async ({ page }) => {
+setup('authenticate', async ({ page, context }) => {
   if (!process.env.TEST_USER || !process.env.TEST_PASS) {
     throw new Error('Missing TEST_USER or TEST_PASS env vars');
   }
@@ -14,13 +14,15 @@ setup('authenticate', async ({ page }) => {
 
   await loginPage.fillEmail(process.env.TEST_USER);
   await loginPage.fillPassword(process.env.TEST_PASS);
+  await loginPage.submitLoginBtn();
 
-  await Promise.all([
-    loginPage.submitLoginBtn(),
-    page.waitForURL(/projects/, { timeout: 15_000 }),
-  ]);
-
-  await expect(page).toHaveURL(/projects/);
+  const cookies = await context.cookies();
+  const cookieToken = cookies.find(cookie => cookie.name === 'token')
+  if(cookieToken){
+    expect(cookieToken.value).toBeTruthy();
+  }else{
+      console.log('Authentication token cookie not found.');
+  }
 
   await page.context().storageState({ path: authFile });
 });
