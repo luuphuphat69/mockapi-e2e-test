@@ -26,7 +26,7 @@ test.describe('Projects CRUD', () => {
         await projectPopup.fillProjectName(insertedData.name);
         await projectPopup.fillApiVersion(insertedData.version);
         await projectPopup.submit();
-        await expect(projectPopup.popup).not.toBeVisible();
+        await expect(projectPopup.popup).toBeHidden();
         await expect(projects).toHaveCount(totalBefore + 1);
     }),
 

@@ -14,15 +14,17 @@ setup('authenticate', async ({ page, context }) => {
 
   await loginPage.fillEmail(process.env.TEST_USER);
   await loginPage.fillPassword(process.env.TEST_PASS);
-  await loginPage.submitLoginBtn();
+
+  await Promise.all([
+    page.waitForURL('/'), // relies on baseURL
+    loginPage.submitLoginBtn(),
+  ]);
 
   const cookies = await context.cookies();
-  const cookieToken = cookies.find(cookie => cookie.name === 'token')
-  if(cookieToken){
-    expect(cookieToken.value).toBeTruthy();
-  }else{
-      console.log('Authentication token cookie not found.');
-  }
+  const tokenCookie = cookies.find(c => c.name === 'token');
 
-  await page.context().storageState({ path: authFile });
+  expect(tokenCookie, 'Auth token cookie should exist').toBeTruthy();
+  expect(tokenCookie?.value).not.toBe('');
+
+  await context.storageState({ path: authFile });
 });
