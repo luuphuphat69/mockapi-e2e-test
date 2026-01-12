@@ -4,7 +4,7 @@ import ProjectPopup from "../../../page-model/projects/components-model/ProjectP
 import ProjectCard from "../../../page-model/projects/components-model/ProjectCard";
 import ConfirmDelete from "../../../page-model/projects/components-model/ConfirmDelete";
 
-let selectedProjectPosition = 2
+let selectedProjectPosition = 1
 let updateData = { name: 'test-is-update', version: '/v1' }
 
 test.describe('Projects CRUD', () => {
